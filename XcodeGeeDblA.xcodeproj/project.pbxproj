@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 53;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -240,6 +240,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AB0266BB28F9F88A00B107D4 /* Build configuration list for PBXNativeTarget "GeeDblA Xcode Extension" */;
 			buildPhases = (
+				AB5EFFCC29048C8C00BD7844 /* Increment Build Number On Release Builds */,
+				AB5EFFCD29048D4D00BD7844 /* SwiftLint */,
 				AB0266A328F9F88A00B107D4 /* Sources */,
 				AB0266A428F9F88A00B107D4 /* Frameworks */,
 				AB0266A528F9F88A00B107D4 /* Resources */,
@@ -258,6 +260,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AB2024F728F758A8002A8481 /* Build configuration list for PBXNativeTarget "XcodeGeeDblA" */;
 			buildPhases = (
+				AB5EFFCB29048C1D00BD7844 /* Increment Build Number On Release Builds */,
 				ABB1B1C228F76374002CCBB5 /* Swift Lint */,
 				AB2024CE28F758A7002A8481 /* Sources */,
 				AB2024CF28F758A7002A8481 /* Frameworks */,
@@ -399,8 +402,66 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		AB5EFFCB29048C1D00BD7844 /* Increment Build Number On Release Builds */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Increment Build Number On Release Builds";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/usr/bin/env sh\nif [ \"${CONFIGURATION}\" = \"Release\" ] || [ \"${CONFIGURATION}\" = \"TestFlight\" ]; then\n\tcd \"${PROJECT_DIR}\" ; agvtool bump\nfi\n";
+		};
+		AB5EFFCC29048C8C00BD7844 /* Increment Build Number On Release Builds */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Increment Build Number On Release Builds";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/usr/bin/env sh\nif [ \"${CONFIGURATION}\" = \"Release\" ] || [ \"${CONFIGURATION}\" = \"TestFlight\" ]; then\n\tcd \"${PROJECT_DIR}\" ; agvtool bump\nfi\n";
+		};
+		AB5EFFCD29048D4D00BD7844 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/usr/bin/env sh\nif [ \"${CONFIGURATION}\" = \"Debug\" ]; then\n\tif [[ -f \"/opt/homebrew/bin/brew\" ]]; then\n\t\texport PATH=\"/opt/homebrew/bin:/opt/homebrew/sbin:$PATH\"\n\tfi\n\n    if which swiftlint >/dev/null; then\n\t\t find \"$SRCROOT\" -type f -name \"*.swift\" -print0 | xargs -0 swiftlint --fix --config \"$PROJECT_DIR/.swiftlint.yml\"\n    else\n        echo \"warning: SwiftLint not installed,  brew install SwiftLint\"\n    fi\nfi\n";
+		};
 		ABB1B1C228F76374002CCBB5 /* Swift Lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -419,7 +480,8 @@
 		};
 		ABB1B1C428F76B27002CCBB5 /* Overlay Build Info On Icon */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			alwaysOutOfDate = 1;
+			buildActionMask = 12;
 			files = (
 			);
 			inputFileListPaths = (

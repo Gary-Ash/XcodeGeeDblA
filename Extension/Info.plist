@@ -12,9 +12,41 @@
 					<key>XCSourceEditorCommandClassName</key>
 					<string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
 					<key>XCSourceEditorCommandIdentifier</key>
-					<string>$(PRODUCT_BUNDLE_IDENTIFIER).UpdateModifiedDate</string>
+					<string>$(PRODUCT_BUNDLE_IDENTIFIER).UpdateHeader</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>Update Modified Date</string>
+					<string>Update File Header</string>
+				</dict>
+				<dict>
+					<key>XCSourceEditorCommandClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
+					<key>XCSourceEditorCommandIdentifier</key>
+					<string>$(PRODUCT_BUNDLE_IDENTIFIER).SeperatorLine</string>
+					<key>XCSourceEditorCommandName</key>
+					<string>Insert Seperator Comment</string>
+				</dict>
+				<dict>
+					<key>XCSourceEditorCommandClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
+					<key>XCSourceEditorCommandIdentifier</key>
+					<string>$(PRODUCT_BUNDLE_IDENTIFIER).AsteriskBox</string>
+					<key>XCSourceEditorCommandName</key>
+					<string>Insert Asterisk Box Comment</string>
+				</dict>
+				<dict>
+					<key>XCSourceEditorCommandClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
+					<key>XCSourceEditorCommandIdentifier</key>
+					<string>$(PRODUCT_BUNDLE_IDENTIFIER).DashBox</string>
+					<key>XCSourceEditorCommandName</key>
+					<string>Insert Dash Box Comment</string>
+				</dict>
+				<dict>
+					<key>XCSourceEditorCommandClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
+					<key>XCSourceEditorCommandIdentifier</key>
+					<string>$(PRODUCT_BUNDLE_IDENTIFIER).EqualsBox</string>
+					<key>XCSourceEditorCommandName</key>
+					<string>Insert Equals Box Comment</string>
 				</dict>
 			</array>
 			<key>XCSourceEditorExtensionPrincipalClass</key>

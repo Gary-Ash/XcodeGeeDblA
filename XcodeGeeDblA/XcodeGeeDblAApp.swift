@@ -10,10 +10,15 @@
  * Copyright © 2022 By Gee Dbl A All rights reserved.
  ****************************************************************************************/
 
+import AppKit
 import SwiftUI
 
 @main
 struct XcodeGeeDblAApp: App {
+	static func main() {
+		NSApplication().terminate(self)
+	}
+
     var body: some Scene {
 		WindowGroup {
 			 ContentView()

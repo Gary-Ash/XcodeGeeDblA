@@ -21,4 +21,5 @@ let SupportedContentUTIs = [
 
 enum CommandError: String, Error {
 	case notSupported = "Unsupported file type"
+	case notMine      = "Not a Gee Dbl A source file"
 }
