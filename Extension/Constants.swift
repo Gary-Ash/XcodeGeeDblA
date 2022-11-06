@@ -17,7 +17,13 @@ let SupportedContentUTIs = [
 	"com.apple.dt.playground",
 	"com.apple.dt.playgroundpage",
 	"com.apple.dt.swiftpm-package-manifest",
-	"com.apple.xcode.strings-text"
+	"com.apple.xcode.strings-text",
+	"public.c-plus-plus-source",
+	"public.objective-c-source",
+	"public.objective-c-plus-plus-source",
+	"public.c-header",
+	"public.c-source",
+	"public.precompiled-c-header",
 ]
 
 enum CommandError: String, Error {

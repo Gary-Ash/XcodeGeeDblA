@@ -10,7 +10,6 @@
  * Copyright © 2022 By Gee Dbl A All rights reserved.
  ****************************************************************************************/
 
-import AppKit
 import SwiftUI
 
 @main

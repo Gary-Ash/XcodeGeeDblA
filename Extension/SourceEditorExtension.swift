@@ -1,7 +1,7 @@
 /*****************************************************************************************
  * SourceEditorExtension.swift
  * 
- *
+ * This file contains extension boilerplate
  *
  * Author   :  Gary Ash <gary.ash@icloud.com>
  * Created  :  14-Oct-2022 4:05 PM

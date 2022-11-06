@@ -1,1 +1,10 @@
-Run script build phase 'Reset App Icon' will be run during every build because it does not specify any outputs. To address this warning, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase.
+#!/usr/bin/env sh
+if [ "${CONFIGURATION}" = "TestFlight" ]; then
+	if [ -f "/opt/homebrew/bin/brew" ]; then
+		export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+	fi
+	if which magick >/dev/null; then
+		iconDir="${SRCROOT}/${PROJECT_NAME}/Assets.xcassets/AppIcon.appiconset/"
+        cp -rf  "${TMPDIR}/${iconDir}" "${iconDir}"
+	fi
+fi

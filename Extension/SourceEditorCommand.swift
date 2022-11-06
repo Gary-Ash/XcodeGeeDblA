@@ -1,7 +1,7 @@
 /*****************************************************************************************
  * SourceEditorCommand.swift
  *
- *
+ * This file contains the extension main command entry point
  *
  * Author   :  Gary Ash <gary.ash@icloud.com>
  * Created  :  17-Oct-2022  7:23pm
