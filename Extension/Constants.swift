@@ -4,8 +4,8 @@
  *
  *
  * Author   :  Gary Ash <gary.ash@icloud.com>
- * Created  :  18-Oct-2022 11:31am
- * Modified :  18-Oct-2022 11:30am
+ * Created  :  18-Oct-2022  11:31am
+ * Modified :   5-Nov-2022   4:48pm
  *
  * Copyright © 2022 By Gee Dbl A All rights reserved.
  ****************************************************************************************/
@@ -16,7 +16,8 @@ let SupportedContentUTIs = [
 	"public.swift-source",
 	"com.apple.dt.playground",
 	"com.apple.dt.playgroundpage",
-	"com.apple.dt.swiftpm-package-manifest"
+	"com.apple.dt.swiftpm-package-manifest",
+	"com.apple.xcode.strings-text"
 ]
 
 enum CommandError: String, Error {

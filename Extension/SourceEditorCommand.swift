@@ -5,7 +5,7 @@
  *
  * Author   :  Gary Ash <gary.ash@icloud.com>
  * Created  :  17-Oct-2022  7:23pm
- * Modified :  22-Oct-2022  10:16pm
+ * Modified :   5-Nov-2022  4:44pm
  *
  * Copyright © 2022 By Gee Dbl A All rights reserved.
  ****************************************************************************************/
@@ -18,8 +18,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
 
 	func perform(with invocation: XCSourceEditorCommandInvocation, completionHandler: @escaping (Error?) -> Void) {
 		guard SupportedContentUTIs.contains(invocation.buffer.contentUTI) else {
-			let error: CommandError = .notSupported
-			return completionHandler(error)
+			return completionHandler(nil)
 		}
 
 		if invocation.commandIdentifier.hasSuffix(".UpdateHeader") {
@@ -44,21 +43,25 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
 		for range in invocation.buffer.selections {
 			let r = range as! XCSourceTextRange
 			if r.start.line == r.end.line, r.start.column == r.end.column {
-				var numberOfDecorationCharacters = 88 - r.start.column
+				var numberOfDecorationCharacters = 88 - getColumnNumber(invocation, column: r.start.column)
 				if numberOfDecorationCharacters < 1 {
 					numberOfDecorationCharacters = 3
 				}
-				let comment1 = addSpaces(r.start.column) + "/*" + String(repeating: decoratorChar, count: numberOfDecorationCharacters)
-				let comment2 = addSpaces(r.start.column) + " *"
-				let comment3 = addSpaces(r.start.column) + " *" + String(repeating: decoratorChar, count: numberOfDecorationCharacters - 2) + "*/"
+				let comment1 = addSpaces(invocation, numberSpaces: r.start.column) + "/*" + String(repeating: decoratorChar, count: numberOfDecorationCharacters)
+				let comment2 = addSpaces(invocation, numberSpaces: r.start.column) + " *"
+				let comment3 = addSpaces(invocation, numberSpaces: r.start.column) + " *" + String(repeating: decoratorChar, count: numberOfDecorationCharacters - 2) + "*/"
 
-				invocation.buffer.lines.insert(comment1, at: r.start.line)
-				invocation.buffer.lines.insert(comment2, at: r.start.line + 1)
-				invocation.buffer.lines.insert(comment3, at: r.start.line + 2)
-
-				let p = XCSourceTextPosition(line: r.start.line + 1, column: r.start.column + 3)
-				invocation.buffer.selections.removeAllObjects()
-				invocation.buffer.selections[0] = XCSourceTextRange(start: p, end: p)
+				if r.start.column > 0 {
+					invocation.buffer.lines.insert(comment1, at: r.start.line)
+					invocation.buffer.lines.insert(comment2, at: r.start.line)
+					invocation.buffer.lines.insert(comment3, at: r.start.line)
+					setCursor(invocation, line: r.start.line - 2, column: r.start.column + 3)
+				} else {
+					invocation.buffer.lines.insert(comment1, at: r.start.line)
+					invocation.buffer.lines.insert(comment2, at: r.start.line + 1)
+					invocation.buffer.lines.insert(comment3, at: r.start.line + 2)
+					setCursor(invocation, line: r.start.line + 1, column: r.start.column + 3)
+				}
 			}
 		}
 	}
@@ -67,15 +70,13 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
 		for range in invocation.buffer.selections {
 			let r = range as! XCSourceTextRange
 			if r.start.line == r.end.line, r.start.column == r.end.column {
-				var numberDashes = 86 - r.start.column
+				var numberDashes = 86 - getColumnNumber(invocation, column: r.start.column)
 				if numberDashes < 1 {
 					numberDashes = 1
 				}
-				let comment = addSpaces(r.start.column) + "/*" + String(repeating: "-", count: numberDashes) + "*/\n"
+				let comment = addSpaces(invocation, numberSpaces: r.start.column) + "/*" + String(repeating: "-", count: numberDashes) + "*/\n"
 				invocation.buffer.lines.insert(comment, at: r.start.line)
-				let p = XCSourceTextPosition(line: r.start.line + 1, column: r.start.column)
-				invocation.buffer.selections.removeAllObjects()
-				invocation.buffer.selections[0] = XCSourceTextRange(start: p, end: p)
+				setCursor(invocation, line: r.start.line + 1, column: r.start.column)
 			}
 		}
 	}
@@ -127,9 +128,27 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
 		}
 	}
 
-	private func addSpaces(_ numberSpaces: Int) -> String {
-		return String(repeating: " ", count: numberSpaces)
+	private func setCursor(_ invocation: XCSourceEditorCommandInvocation, line: Int, column: Int) {
+		var col = column
+		if invocation.buffer.usesTabsForIndentation {
+			col = invocation.buffer.indentationWidth * column
+		}
+		let p = XCSourceTextPosition(line: line, column: col)
+		invocation.buffer.selections.removeAllObjects()
+		invocation.buffer.selections[0] = XCSourceTextRange(start: p, end: p)
 	}
+
+	private func getColumnNumber(_ invocation: XCSourceEditorCommandInvocation, column: Int) -> Int {
+		if invocation.buffer.usesTabsForIndentation {
+			return invocation.buffer.indentationWidth * column
+		}
+		return column + 1
+	}
+
+	private func addSpaces(_ invocation: XCSourceEditorCommandInvocation, numberSpaces: Int) -> String {
+		return String(repeating: " ", count: getColumnNumber(invocation, column: numberSpaces))
+	}
+
 	private func stringFromDate(_ date: Date) -> String {
 		var output = ""
 		let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)

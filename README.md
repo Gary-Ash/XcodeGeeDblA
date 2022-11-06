@@ -5,4 +5,7 @@ This project is simple test of the Xcode source extension system. Please ensure 
 
   
 
-All this does right now is update the modified time stamp of the file header comment that I commonly use in my projects.
+All this extension does right now is provide the insertion of some the comment forms that are part of my usual style and update the modified timestamp of the file header comment that I commonly use in my projects.  
+  
+* Comment built of dashes that I normally use to separate the parts of a file.
+* Box forms of comments built with asterisks, equal signs, or dashes.
