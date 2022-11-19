@@ -5,7 +5,7 @@
  *
  * Author   :  Gary Ash <gary.ash@icloud.com>
  * Created  :  17-Oct-2022  7:23pm
- * Modified :   5-Nov-2022  4:44pm
+ * Modified :  18-Nov-2022  11:12pm
  *
  * Copyright © 2022 By Gee Dbl A All rights reserved.
  ****************************************************************************************/
@@ -14,7 +14,13 @@ import Foundation
 import XcodeKit
 
 class SourceEditorCommand: NSObject, XCSourceEditorCommand {
-	let dateFormatter = DateFormatter()
+	private var copyrightHolders: [String]
+	private let dateFormatter = DateFormatter()
+
+	override init() {
+		self.copyrightHolders = UserDefaults(suiteName: "XcodeGeeDblA")?.array(forKey: "Copyright Holders") as? [String] ?? []
+		super.init()
+	}
 
 	func perform(with invocation: XCSourceEditorCommandInvocation, completionHandler: @escaping (Error?) -> Void) {
 		guard SupportedContentUTIs.contains(invocation.buffer.contentUTI) else {
@@ -22,9 +28,23 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
 		}
 
 		if invocation.commandIdentifier.hasSuffix(".UpdateHeader") {
-			guard let _ = invocation.buffer.completeBuffer.range(of: "Copyright © [0-9]* By Gee Dbl A All rights reserved.", options: .regularExpression, range: nil, locale: nil) else {
+			guard let copyrightRange = invocation.buffer.completeBuffer.range(of: "Copyright © [0-9]* By (.*) All rights reserved.", options: .regularExpression, range: nil, locale: nil) else {
 				let error: CommandError = .notMine
 				return completionHandler(error)
+			}
+			if let tightenRange = invocation.buffer.completeBuffer.range(of: "By (.*) All", options: .regularExpression, range: copyrightRange, locale: nil) {
+				let s = String(invocation.buffer.completeBuffer[tightenRange.lowerBound ... tightenRange.upperBound])
+				var company = s.replacingOccurrences(of: "By ", with: "")
+				company = company.replacingOccurrences(of: " All", with: "")
+				company = company.trimmingCharacters(in: .whitespacesAndNewlines)
+	
+				for c in copyrightHolders {
+					if c == company {
+						updateHeaderComment(&invocation.buffer.completeBuffer)
+						break
+					}
+				}
+				return completionHandler(nil)
 			}
 			updateHeaderComment(&invocation.buffer.completeBuffer)
 		} else if invocation.commandIdentifier.hasSuffix(".SeperatorLine") {
@@ -105,7 +125,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
 			}
 		}
 
-		if let range = buffer.range(of: "Copyright © [0-9]* By Gee Dbl A All rights reserved", options: .regularExpression, range: nil, locale: nil) {
+		if let range = buffer.range(of: "Copyright © [0-9]* By (.*) All rights reserved", options: .regularExpression, range: nil, locale: nil) {
 			if let yearRange = buffer.range(of: "20[0-9]*", options: .regularExpression, range: range, locale: nil) {
 				let startIndex = yearRange.lowerBound
 				let endIndex = yearRange.upperBound

@@ -23,7 +23,7 @@ let SupportedContentUTIs = [
 	"public.objective-c-plus-plus-source",
 	"public.c-header",
 	"public.c-source",
-	"public.precompiled-c-header",
+	"public.precompiled-c-header"
 ]
 
 enum CommandError: String, Error {

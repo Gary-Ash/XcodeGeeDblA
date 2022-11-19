@@ -14,10 +14,6 @@ import SwiftUI
 
 @main
 struct XcodeGeeDblAApp: App {
-	static func main() {
-		NSApplication().terminate(self)
-	}
-
     var body: some Scene {
 		WindowGroup {
 			 ContentView()
