@@ -37,7 +37,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
 				var company = s.replacingOccurrences(of: "By ", with: "")
 				company = company.replacingOccurrences(of: " All", with: "")
 				company = company.trimmingCharacters(in: .whitespacesAndNewlines)
-	
+
 				for c in copyrightHolders {
 					if c == company {
 						updateHeaderComment(&invocation.buffer.completeBuffer)
