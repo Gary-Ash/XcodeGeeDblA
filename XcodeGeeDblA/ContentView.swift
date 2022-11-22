@@ -13,7 +13,8 @@
 import SwiftUI
 
 struct ContentView: View {
-	@State var copyrightHolder = ""
+	@State private var selection: String?
+	@State private var copyrightHolder = ""
 	@State var copyrightHolders: [String]
 
 	var body: some View {
@@ -35,8 +36,8 @@ struct ContentView: View {
 				}
 				Spacer()
 			}
-			List {
-				ForEach($copyrightHolders, id: \.self) { $company in
+			List(selection: $selection) {
+				ForEach(copyrightHolders, id: \.self) { company in
 					Text(company)
 				}
 				.onDelete {
