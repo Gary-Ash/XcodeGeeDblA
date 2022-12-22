@@ -1,11 +1,11 @@
 /*****************************************************************************************
  * ContentView.swift
  *
- *
+ * This file contains the implementation of the copyright's list editor.
  *
  * Author   :  Gary Ash <gary.ash@icloud.com>
  * Created  :  14-Oct-2022  4:02pm
- * Modified :  18-Nov-2022  4:53pm
+ * Modified :  20-Dec-2022  9:03pm
  *
  * Copyright © 2022 By Gee Dbl A All rights reserved.
  ****************************************************************************************/
@@ -24,8 +24,8 @@ struct ContentView: View {
 					.font(.title)
 				HStack(spacing: 10) {
 					TextField("copyright holder", text: $copyrightHolder)
-						.overlay(RoundedRectangle(cornerRadius: 1)
-							.stroke(Color.gray, lineWidth: 1))
+						.overlay(RoundedRectangle(cornerRadius: 3.0).strokeBorder(Color.blue, style: StrokeStyle(lineWidth: 1.0)))
+						.padding()
 
 					Button("add") {
 						copyrightHolder = copyrightHolder.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -50,7 +50,7 @@ struct ContentView: View {
 	}
 
 	init() {
-		self.copyrightHolders = UserDefaults(suiteName: "XcodeGeeDblA")?.array(forKey: "Copyright Holders") as? [String] ?? []
+		copyrightHolders = UserDefaults(suiteName: "XcodeGeeDblA")?.array(forKey: "Copyright Holders") as? [String] ?? []
 	}
 }
 

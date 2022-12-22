@@ -29,8 +29,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
 
 		if invocation.commandIdentifier.hasSuffix(".UpdateHeader") {
 			guard let copyrightRange = invocation.buffer.completeBuffer.range(of: "Copyright © [0-9]* By (.*) All rights reserved.", options: .regularExpression, range: nil, locale: nil) else {
-				let error: CommandError = .notMine
-				return completionHandler(error)
+				return completionHandler(nil)
 			}
 			if let tightenRange = invocation.buffer.completeBuffer.range(of: "By (.*) All", options: .regularExpression, range: copyrightRange, locale: nil) {
 				let s = String(invocation.buffer.completeBuffer[tightenRange.lowerBound ... tightenRange.upperBound])
