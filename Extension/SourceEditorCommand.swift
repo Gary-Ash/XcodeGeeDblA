@@ -5,9 +5,9 @@
  *
  * Author   :  Gary Ash <gary.ash@icloud.com>
  * Created  :  17-Oct-2022  7:23pm
- * Modified :  18-Nov-2022  11:12pm
+ * Modified :   1-Jan-2023  1:38pm
  *
- * Copyright © 2022 By Gee Dbl A All rights reserved.
+ * Copyright © 2022) - 2023 By Gee Dbl A All rights reserved.
  ****************************************************************************************/
 
 import Foundation
@@ -18,7 +18,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
 	private let dateFormatter = DateFormatter()
 
 	override init() {
-		self.copyrightHolders = UserDefaults(suiteName: "XcodeGeeDblA")?.array(forKey: "Copyright Holders") as? [String] ?? []
+		copyrightHolders = UserDefaults(suiteName: "XcodeGeeDblA")?.array(forKey: "Copyright Holders") as? [String] ?? []
 		super.init()
 	}
 
@@ -140,7 +140,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
 					} else {
 						buffer.removeSubrange(yearRange)
 					}
-					let copyright = "\(String(describing: year)) - \(components.year!)"
+					let copyright = "\(year!) - \(components.year!)"
 					buffer.insert(contentsOf: copyright, at: yearRange.lowerBound)
 				}
 			}
