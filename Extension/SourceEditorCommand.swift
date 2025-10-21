@@ -5,17 +5,14 @@
  *
  * Author   :  Gary Ash <gary.ash@icloud.com>
  * Created  :  26-Mar-2025  7:24pm
- * Modified :
- * 
+ * Modified :  20-Oct-2025  9:51pm
+ *
  * Copyright © 2024-2025 By Gary Ash All rights reserved.
  ****************************************************************************************/
 
 import XcodeKit
 
 class SourceEditorCommand: NSObject, XCSourceEditorCommand {
-	private var copyrightHolders: [String]
-	private let dateFormatter = DateFormatter()
-
 	override init() {
 		copyrightHolders = UserDefaults(suiteName: "XcodeGeeDblA")?.array(forKey: "Copyright Holders") as? [String] ?? []
 		super.init()
@@ -61,6 +58,9 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
 		completionHandler(nil)
 	}
 
+	private var copyrightHolders: [String]
+	private let dateFormatter = DateFormatter()
+
 	private func boxComment(_ invocation: XCSourceEditorCommandInvocation, decoratorChar: String) {
 		for range in invocation.buffer.selections {
 			let r = range as! XCSourceTextRange
@@ -104,8 +104,8 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
 	}
 
 	private func updateHeaderComment(_ invocation: XCSourceEditorCommandInvocation) {
-		let createdRegEx = /Created\s*:\s*\d*-...-\d*\s*\d*:\d*.*|Created\s*:\s*/
-		let modifiedRegEx = /Modified\s*:\s*\d*-...-\d*\s*\d*:\d*.*|Modified\s*:\s*/
+		let createdRegEx = /Created\s*:\s*\d*-...-\d*\s*\d*:\d*.*(?=\n)|Created\s*:.*(?=\n)/
+		let modifiedRegEx = /Modified\s*:\s*\d*-...-\d*\s*\d*:\d*.*(?=\n)|Modified\s*:.*(?=\n)/
 		let copyrightRegEx = "Copyright © ([0-9 \\*-]*) By (.*) All rights reserved"
 		/*********************************************************************************
 		 * update the Created: date to ensure its in the proper form
@@ -144,11 +144,13 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
 		if let range = invocation.buffer.completeBuffer.range(of: copyrightRegEx,
 		                                                      options: .regularExpression,
 		                                                      range: nil,
-		                                                      locale: nil) {
+		                                                      locale: nil)
+		{
 			if let yearRange = invocation.buffer.completeBuffer.range(of: "20[0-9]*",
 			                                                          options: .regularExpression,
 			                                                          range: range,
-			                                                          locale: nil) {
+			                                                          locale: nil)
+			{
 				let startIndex = yearRange.lowerBound
 				let endIndex = yearRange.upperBound
 				let yearSubstring = String(invocation.buffer.completeBuffer[startIndex ..< endIndex])
@@ -161,7 +163,8 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
 					if let dateRange = invocation.buffer.completeBuffer.range(of: "20[0-9]*-20[0-9]*",
 					                                                          options: .regularExpression,
 					                                                          range: range,
-					                                                          locale: nil) {
+					                                                          locale: nil)
+					{
 						invocation.buffer.completeBuffer.removeSubrange(dateRange)
 					} else {
 						invocation.buffer.completeBuffer.removeSubrange(yearRange)
