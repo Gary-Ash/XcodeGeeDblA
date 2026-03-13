@@ -46,6 +46,7 @@ struct ContentView: View {
 					UserDefaults(suiteName: appGroupSuiteName)?.set(copyrightHolders, forKey: "Copyright Holders")
 				}
 			}
+			.border(Color.accentColor)
 		}
 		.padding(20)
 	}

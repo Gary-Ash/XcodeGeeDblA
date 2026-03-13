@@ -289,7 +289,6 @@
 /* Begin PBXShellScriptBuildPhase section */
 		AB11111100000000AAAA0003 /* Generate App Group ID */ = {
 			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);

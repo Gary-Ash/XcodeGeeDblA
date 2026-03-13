@@ -57,13 +57,40 @@ You can also assign keyboard shortcuts to these commands via **Xcode → Setting
 
 ## Building from Source
 
+### Xcode
+
 ```bash
 git clone https://github.com/YourUsername/XcodeGeeDblA.git
 cd XcodeGeeDblA
 open XcodeGeeDblA.xcodeproj
 ```
 
-Build and run the main application target. The extension will be automatically built and registered.
+Select your development team in **Signing & Capabilities** for both the app and extension targets, then build and run. The extension will be automatically built and registered.
+
+### Distribution Build
+
+The `build.sh` script automates a full release build including code signing and notarization. It extracts your team ID from the Developer ID Application certificate in your keychain, so no team ID needs to be stored in the project file.
+
+**Prerequisites:**
+
+- A **Developer ID Application** certificate installed in your keychain
+- A notarization keychain profile named `notary-profile` (created via `xcrun notarytool store-credentials`)
+
+```bash
+./build.sh
+```
+
+The script performs the following steps:
+
+1. Locates your Developer ID Application signing certificate
+2. Extracts the team ID and injects it into the Xcode project file
+3. Builds a Release configuration with `xcodebuild`
+4. Code signs the resulting `XcodeGeeDblA.app`
+5. Submits the app for Apple notarization and waits for approval
+6. Staples the notarization ticket to the app
+7. Cleans up by removing the team ID from the project file and any generated build artifacts
+
+On completion, a signed and notarized `XcodeGeeDblA.app` is ready for distribution in the project root.
 
 ### Debugging the Extension
 
