@@ -14,9 +14,9 @@
 					<key>XCSourceEditorCommandClassName</key>
 					<string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
 					<key>XCSourceEditorCommandIdentifier</key>
-					<string>$(PRODUCT_BUNDLE_IDENTIFIER).RemoveComment</string>
+					<string>$(PRODUCT_BUNDLE_IDENTIFIER).GenerateHeader</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>Remove Function Trace Comment</string>
+					<string>Generate File Header</string>
 				</dict>
 				<dict>
 					<key>XCSourceEditorCommandClassName</key>
@@ -62,17 +62,17 @@
 					<key>XCSourceEditorCommandClassName</key>
 					<string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
 					<key>XCSourceEditorCommandIdentifier</key>
-					<string>$(PRODUCT_BUNDLE_IDENTIFIER).GenerateHeader</string>
+					<string>$(PRODUCT_BUNDLE_IDENTIFIER).AddComment</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>Generate File Header</string>
+					<string>Insert Function Trace Comment</string>
 				</dict>
 				<dict>
 					<key>XCSourceEditorCommandClassName</key>
 					<string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
 					<key>XCSourceEditorCommandIdentifier</key>
-					<string>$(PRODUCT_BUNDLE_IDENTIFIER).AddComment</string>
+					<string>$(PRODUCT_BUNDLE_IDENTIFIER).RemoveComment</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>Insert Function Trace Comment</string>
+					<string>Remove Function Trace Comment</string>
 				</dict>
 			</array>
 		</dict>
