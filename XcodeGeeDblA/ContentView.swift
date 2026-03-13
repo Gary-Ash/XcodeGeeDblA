@@ -5,7 +5,7 @@
  *
  * Author   :  Gary Ash <gary.ash@icloud.com>
  * Created  :  31-Jan-2026  10:52pm
- * Modified :
+ * Modified :  12-Mar-2026
  *
  * Copyright © 2026 By Gary Ash All rights reserved.
  ****************************************************************************************/
@@ -31,7 +31,7 @@ struct ContentView: View {
 						copyrightHolder = copyrightHolder.trimmingCharacters(in: .whitespacesAndNewlines)
 						copyrightHolders.append(copyrightHolder)
 						copyrightHolders.sort()
-						UserDefaults(suiteName: "XcodeGeeDblA")?.set(copyrightHolders, forKey: "Copyright Holders")
+						UserDefaults(suiteName: appGroupSuiteName)?.set(copyrightHolders, forKey: "Copyright Holders")
 						copyrightHolder = ""
 					}
 				}
@@ -43,7 +43,7 @@ struct ContentView: View {
 				}
 				.onDelete {
 					copyrightHolders.remove(atOffsets: $0)
-					UserDefaults(suiteName: "XcodeGeeDblA")?.set(copyrightHolders, forKey: "Copyright Holders")
+					UserDefaults(suiteName: appGroupSuiteName)?.set(copyrightHolders, forKey: "Copyright Holders")
 				}
 			}
 		}
@@ -51,7 +51,7 @@ struct ContentView: View {
 	}
 
 	init() {
-		var temp = UserDefaults(suiteName: "XcodeGeeDblA")?.array(forKey: "Copyright Holders") as? [String] ?? []
+		var temp = UserDefaults(suiteName: appGroupSuiteName)?.array(forKey: "Copyright Holders") as? [String] ?? []
 		temp.sort()
 		copyrightHolders = temp
 	}

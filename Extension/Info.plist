@@ -62,6 +62,14 @@
 					<key>XCSourceEditorCommandClassName</key>
 					<string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
 					<key>XCSourceEditorCommandIdentifier</key>
+					<string>$(PRODUCT_BUNDLE_IDENTIFIER).GenerateHeader</string>
+					<key>XCSourceEditorCommandName</key>
+					<string>Generate File Header</string>
+				</dict>
+				<dict>
+					<key>XCSourceEditorCommandClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
+					<key>XCSourceEditorCommandIdentifier</key>
 					<string>$(PRODUCT_BUNDLE_IDENTIFIER).AddComment</string>
 					<key>XCSourceEditorCommandName</key>
 					<string>Insert Function Trace Comment</string>

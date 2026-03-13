@@ -5,7 +5,7 @@
  *
  * Author   :  Gary Ash <gary.ash@icloud.com>
  * Created  :  31-Jan-2026  10:52pm
- * Modified :
+ * Modified :  12-Mar-2026
  *
  * Copyright © 2026 By Gary Ash All rights reserved.
  ****************************************************************************************/
@@ -14,7 +14,7 @@ import XcodeKit
 
 class SourceEditorCommand: NSObject, XCSourceEditorCommand {
 	override init() {
-		copyrightHolders = UserDefaults(suiteName: "XcodeGeeDblA")?.array(forKey: "Copyright Holders") as? [String] ?? []
+		copyrightHolders = UserDefaults(suiteName: appGroupSuiteName)?.array(forKey: "Copyright Holders") as? [String] ?? []
 		super.init()
 	}
 
@@ -50,6 +50,8 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
 			boxComment(invocation, decoratorChar: "-")
 		} else if invocation.commandIdentifier.hasSuffix(".EqualsBox") {
 			boxComment(invocation, decoratorChar: "=")
+		} else if invocation.commandIdentifier.hasSuffix(".GenerateHeader") {
+			generateFileHeader(invocation)
 		} else if invocation.commandIdentifier.hasSuffix(".AddComment") {
 			addComments(invocation)
 		} else if invocation.commandIdentifier.hasSuffix(".RemoveComment") {
@@ -144,13 +146,11 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
 		if let range = invocation.buffer.completeBuffer.range(of: copyrightRegEx,
 		                                                      options: .regularExpression,
 		                                                      range: nil,
-		                                                      locale: nil)
-		{
+		                                                      locale: nil) {
 			if let yearRange = invocation.buffer.completeBuffer.range(of: "20[0-9]*",
 			                                                          options: .regularExpression,
 			                                                          range: range,
-			                                                          locale: nil)
-			{
+			                                                          locale: nil) {
 				let startIndex = yearRange.lowerBound
 				let endIndex = yearRange.upperBound
 				let yearSubstring = String(invocation.buffer.completeBuffer[startIndex ..< endIndex])
@@ -163,8 +163,7 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
 					if let dateRange = invocation.buffer.completeBuffer.range(of: "20[0-9]*-20[0-9]*",
 					                                                          options: .regularExpression,
 					                                                          range: range,
-					                                                          locale: nil)
-					{
+					                                                          locale: nil) {
 						invocation.buffer.completeBuffer.removeSubrange(dateRange)
 					} else {
 						invocation.buffer.completeBuffer.removeSubrange(yearRange)
@@ -176,7 +175,33 @@ class SourceEditorCommand: NSObject, XCSourceEditorCommand {
 		}
 	}
 
-	/*----------------------------------------------------------------------------------*/
+	private func generateFileHeader(_ invocation: XCSourceEditorCommandInvocation) {
+		let createdDate = stringFromDate(Date())
+		let components = Calendar.current.dateComponents([.year], from: Date())
+		let year = components.year!
+		let copyrightHolder = copyrightHolders.first ?? "Gary Ash"
+		let lineWidth = 89
+
+		let header = [
+			"/*" + String(repeating: "*", count: lineWidth - 2),
+			" * <#file name#>",
+			" *",
+			" * <#brief summary of the file contents#>",
+			" *",
+			" * Author   :  Gary Ash <gary.ash@icloud.com>",
+			" * Created  :  \(createdDate)",
+			" * Modified :",
+			" *",
+			" * Copyright © \(year) By \(copyrightHolder) All rights reserved.",
+			" " + String(repeating: "*", count: lineWidth - 2) + "/",
+			""
+		]
+
+		for (index, line) in header.enumerated() {
+			invocation.buffer.lines.insert(line, at: index)
+		}
+		setCursor(invocation, line: 1, column: 3)
+	}
 
 	private func setCursor(_ invocation: XCSourceEditorCommandInvocation, line: Int, column: Int) {
 		var col = column

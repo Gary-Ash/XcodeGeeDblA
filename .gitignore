@@ -33,6 +33,9 @@ Thumbs.db
 .idea/
 *.iml
 
+# Generated at build time
+AppGroup.swift
+
 # Crash logs
 *.crash
 *.ips
