@@ -7,7 +7,7 @@ set -euo pipefail
 #
 # Author   :  Gary Ash <gary.ash@icloud.com>
 # Created  :  13-Mar-2026  5:06pm
-# Modified :  13-Mar-2026  6:30pm
+# Modified :  8-Jun-2026  10:52pm
 #
 # Copyright © 2026 By Gary Ash All rights reserved.
 #*****************************************************************************************
@@ -69,6 +69,14 @@ main() {
 		clean build
 
 	cp -R "${BUILD_DIR}/Build/Products/Release/${APP_NAME}.app" "${APP_NAME}.app"
+
+	echo "Stripping non-arm64 architectures..."
+	while IFS= read -r -d '' binary; do
+		if lipo -archs "${binary}" >/dev/null 2>&1 && lipo -archs "${binary}" | grep -qw "x86_64"; then
+			lipo -thin arm64 "${binary}" -output "${binary}"
+			echo "  thinned: ${binary}"
+		fi
+	done < <(find "${APP_NAME}.app" -type f -print0)
 
 	codesign --force --sign "${SIGNING_IDENTITY}" \
 		--options runtime \
