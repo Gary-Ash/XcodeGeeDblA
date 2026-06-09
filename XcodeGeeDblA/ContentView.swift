@@ -4,8 +4,8 @@
  * This file contains the implementation of the copyright's list editor.
  *
  * Author   :  Gary Ash <gary.ash@icloud.com>
- * Created  :  31-Jan-2026  10:52pm
- * Modified :  12-Mar-2026
+ * Created  :  31-Jan-2026 10:52pm
+ * Modified :   8-Jun-2026 11:19pm
  *
  * Copyright © 2026 By Gary Ash All rights reserved.
  ****************************************************************************************/
@@ -18,14 +18,17 @@ struct ContentView: View {
 	@State var copyrightHolders: [String]
 
 	var body: some View {
-		VStack {
+		VStack(spacing: 20) {
 			VStack {
 				Text("copyright.holders")
 					.font(.title)
-				HStack(spacing: 10) {
+				HStack() {
 					TextField("copyright holder", text: $copyrightHolder)
-						.overlay(RoundedRectangle(cornerRadius: 3.0).strokeBorder(Color.blue, style: StrokeStyle(lineWidth: 1.0)))
-						.padding()
+						.clipShape(RoundedRectangle(cornerRadius: 8))
+						.overlay(
+							RoundedRectangle(cornerRadius: 8)
+								.stroke(.separator, lineWidth: 1)
+						)
 
 					Button("add") {
 						copyrightHolder = copyrightHolder.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -35,18 +38,23 @@ struct ContentView: View {
 						copyrightHolder = ""
 					}
 				}
-				Spacer()
 			}
-			List(selection: $selection) {
-				ForEach(copyrightHolders, id: \.self) { company in
-					Text(company)
+			ZStack {
+				List(selection: $selection) {
+					ForEach(copyrightHolders, id: \.self) { company in
+						Text(company)
+					}
+					.onDelete {
+						copyrightHolders.remove(atOffsets: $0)
+						UserDefaults(suiteName: appGroupSuiteName)?.set(copyrightHolders, forKey: "Copyright Holders")
+					}
 				}
-				.onDelete {
-					copyrightHolders.remove(atOffsets: $0)
-					UserDefaults(suiteName: appGroupSuiteName)?.set(copyrightHolders, forKey: "Copyright Holders")
-				}
+				.clipShape(RoundedRectangle(cornerRadius: 8))
+				.overlay(
+					RoundedRectangle(cornerRadius: 8)
+						.stroke(.separator, lineWidth: 1)
+				)
 			}
-			.border(Color.accentColor)
 		}
 		.padding(20)
 	}
