@@ -5,7 +5,7 @@
  *
  * Author   :  Gary Ash <gary.ash@icloud.com>
  * Created  :  31-Jan-2026 10:52pm
- * Modified :   8-Jun-2026 11:19pm
+ * Modified :   9-Jun-2026 10:05pm
  *
  * Copyright © 2026 By Gary Ash All rights reserved.
  ****************************************************************************************/
@@ -16,6 +16,7 @@ struct ContentView: View {
 	@State private var selection: String?
 	@State private var copyrightHolder = ""
 	@State var copyrightHolders: [String]
+	@FocusState private var copyrightHolderFocused: Bool
 
 	var body: some View {
 		VStack(spacing: 20) {
@@ -24,6 +25,7 @@ struct ContentView: View {
 					.font(.title)
 				HStack() {
 					TextField("copyright holder", text: $copyrightHolder)
+						.focused($copyrightHolderFocused)
 						.clipShape(RoundedRectangle(cornerRadius: 8))
 						.overlay(
 							RoundedRectangle(cornerRadius: 8)
@@ -57,6 +59,11 @@ struct ContentView: View {
 			}
 		}
 		.padding(20)
+		.onAppear {
+			DispatchQueue.main.async {
+				copyrightHolderFocused = true
+			}
+		}
 	}
 
 	init() {
